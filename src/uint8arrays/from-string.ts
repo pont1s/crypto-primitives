@@ -1,7 +1,7 @@
 const universalAtob = (base64Encoded: string) => {
-  try {
-    return atob(base64Encoded);
-  } catch (err) {
+  if (typeof window !== 'undefined') {
+    return window.atob(base64Encoded);
+  } else {
     return Buffer.from(base64Encoded, 'base64').toString();
   }
 };
