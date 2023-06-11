@@ -37,5 +37,5 @@ export function checkIsKey(key: unknown): CryptoKey {
 }
 
 export function checkValidKeyUse(use: ValueOf<typeof KeyUse>): void {
-  checkValid(use, [KeyUse.Exchange, KeyUse.Write], InvalidKeyUse);
+  checkValid(use, [KeyUse.Encryption, KeyUse.Sign], InvalidKeyUse);
 }

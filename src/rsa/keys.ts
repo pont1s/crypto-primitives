@@ -14,7 +14,8 @@ import {
   type ValueOf,
   type HashAlg,
 } from './../types';
-import { KeyUse, RSA_EXCHANGE_ALG, RSA_WRITE_ALG, type RsaKeyLength } from './types';
+import { RSA_ENCRYPTION_ALG, RSA_SIGN_ALG } from './constants';
+import { KeyUse, type RsaKeyLength } from './types';
 
 export const makeKeypair = async (
   size: ValueOf<typeof RsaKeyLength>,
@@ -22,8 +23,8 @@ export const makeKeypair = async (
   use: ValueOf<typeof KeyUse>,
 ): Promise<CryptoKeyPair> => {
   checkValidKeyUse(use);
-  const alg = use === KeyUse.Exchange ? RSA_EXCHANGE_ALG : RSA_WRITE_ALG;
-  const uses: KeyUsage[] = use === KeyUse.Exchange ? ['encrypt', 'decrypt'] : ['sign', 'verify'];
+  const alg = use === KeyUse.Encryption ? RSA_ENCRYPTION_ALG : RSA_SIGN_ALG;
+  const uses: KeyUsage[] = use === KeyUse.Encryption ? ['encrypt', 'decrypt'] : ['sign', 'verify'];
   return subtle.generateKey(
     {
       name: alg,
@@ -69,8 +70,8 @@ export const importPublicKey = async (
   use: ValueOf<typeof KeyUse>,
 ): Promise<CryptoKey> => {
   checkValidKeyUse(use);
-  const alg = use === KeyUse.Exchange ? RSA_EXCHANGE_ALG : RSA_WRITE_ALG;
-  const uses: KeyUsage[] = use === KeyUse.Exchange ? ['encrypt'] : ['verify'];
+  const alg = use === KeyUse.Encryption ? RSA_ENCRYPTION_ALG : RSA_SIGN_ALG;
+  const uses: KeyUsage[] = use === KeyUse.Encryption ? ['encrypt'] : ['verify'];
   const buf = base64ToArrayBuffer(stripPublicKeyHeader(base64Key));
   return subtle.importKey(
     'spki',
@@ -87,8 +88,8 @@ export const importPrivateKey = async (
   use: ValueOf<typeof KeyUse>,
 ): Promise<CryptoKey> => {
   checkValidKeyUse(use);
-  const alg = use === KeyUse.Exchange ? RSA_EXCHANGE_ALG : RSA_WRITE_ALG;
-  const uses: KeyUsage[] = use === KeyUse.Exchange ? ['decrypt'] : ['sign'];
+  const alg = use === KeyUse.Encryption ? RSA_ENCRYPTION_ALG : RSA_SIGN_ALG;
+  const uses: KeyUsage[] = use === KeyUse.Encryption ? ['decrypt'] : ['sign'];
   const buf = base64ToArrayBuffer(stripPrivateKeyHeader(base64Key));
   return subtle.importKey(
     'pkcs8',

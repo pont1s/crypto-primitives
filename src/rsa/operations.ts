@@ -16,7 +16,8 @@ import {
   type ValueOf,
 } from './../types';
 import { importPublicKey } from './keys';
-import { KeyUse, RSA_EXCHANGE_ALG, RSA_WRITE_ALG } from './types';
+import { RSA_ENCRYPTION_ALG, RSA_SIGN_ALG } from './constants';
+import { KeyUse } from './types';
 
 export const sign = async (
   msg: Message,
@@ -24,7 +25,7 @@ export const sign = async (
   charSize: ValueOf<typeof CharSize> = CHAR_SIZE_DEFAULT,
 ): Promise<ArrayBuffer> => {
   return subtle.sign(
-    { name: RSA_WRITE_ALG, saltLength: SALT_LENGTH },
+    { name: RSA_SIGN_ALG, saltLength: SALT_LENGTH },
     privateKey,
     normalizeUnicodeToBuffer(msg, charSize),
   );
@@ -38,9 +39,9 @@ export const verify = async (
   hashAlg: ValueOf<typeof HashAlg> = HASH_ALG_DEFAULT,
 ): Promise<boolean> => {
   return subtle.verify(
-    { name: RSA_WRITE_ALG, saltLength: SALT_LENGTH },
+    { name: RSA_SIGN_ALG, saltLength: SALT_LENGTH },
     typeof publicKey === 'string'
-      ? await importPublicKey(publicKey, hashAlg, KeyUse.Write)
+      ? await importPublicKey(publicKey, hashAlg, KeyUse.Sign)
       : publicKey,
     normalizeBase64ToBuffer(signature),
     normalizeUnicodeToBuffer(msg, charSize),
@@ -54,9 +55,9 @@ const encrypt = async (
   hashAlg: ValueOf<typeof HashAlg> = HASH_ALG_DEFAULT,
 ): Promise<ArrayBuffer> => {
   return subtle.encrypt(
-    { name: RSA_EXCHANGE_ALG },
+    { name: RSA_ENCRYPTION_ALG },
     typeof publicKey === 'string'
-      ? await importPublicKey(publicKey, hashAlg, KeyUse.Exchange)
+      ? await importPublicKey(publicKey, hashAlg, KeyUse.Encryption)
       : publicKey,
     normalizeUnicodeToBuffer(msg, charSize),
   );
@@ -68,7 +69,7 @@ const decrypt = async (
 ): Promise<ArrayBuffer> => {
   const normalized = normalizeBase64ToBuffer(msg);
   return subtle.decrypt(
-    { name: RSA_EXCHANGE_ALG },
+    { name: RSA_ENCRYPTION_ALG },
     privateKey,
     normalized,
   );

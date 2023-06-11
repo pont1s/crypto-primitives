@@ -5,9 +5,6 @@ export const RsaKeyLength = {
 } as const;
 
 export const KeyUse = {
-  Exchange: 'exchange',
-  Write: 'write',
+  Encryption: 'encryption',
+  Sign: 'sign',
 } as const;
-
-export const RSA_EXCHANGE_ALG = 'RSA-OAEP';
-export const RSA_WRITE_ALG = 'RSASSA-PKCS1-v1_5';
