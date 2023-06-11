@@ -1,10 +1,10 @@
 import { toString, fromString } from 'uint8arrays';
 import {
   CharSize,
-  InvalidMaxValue,
   type ValueOf,
   type Message,
-} from '@/index';
+} from './types';
+import { InvalidMaxValue } from './errors';
 
 export const arrayBufferToString = (buffer: ArrayBuffer, charSize: ValueOf<typeof CharSize>): string => {
   const arr = charSize === 8 ? new Uint8Array(buffer) : new Uint16Array(buffer);

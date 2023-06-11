@@ -1,11 +1,16 @@
 import { subtle } from 'uncrypto';
-import { base64ToArrayBuffer } from '@/index';
 import {
-  ECC_SHARED_ALG, EccCurves, ECDH_CURVE_DEFAULT,
+  base64ToArrayBuffer,
+} from './../utils';
+import {
+  ECC_SHARED_ALG, ECDH_CURVE_DEFAULT,
   SYMMETRIC_ALG_DEFAULT,
   SYMMETRIC_ALG_LENGTH_DEFAULT,
+} from './constants';
+import {
+  EccCurves,
   type SymmetricAlgorithmsKeyOptions,
-} from '@/aes';
+} from './types';
 
 export const getEncryptSharedSymmetricKey = async (publicKey: CryptoKey,
   privateKey: CryptoKey,

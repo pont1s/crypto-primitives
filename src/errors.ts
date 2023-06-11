@@ -1,5 +1,5 @@
-import { ValueOf } from '@/index';
-import { KeyUse } from '@/rsa';
+import { ValueOf } from './types';
+import { KeyUse } from './rsa';
 
 export const KeyDoesNotExist = new Error('Key does not exist. Make sure you properly instantiated the keystore.');
 export const NotKeyPair = new Error('Retrieved a symmetric key when an ' +

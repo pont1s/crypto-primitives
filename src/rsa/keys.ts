@@ -1,14 +1,20 @@
 import { subtle } from 'uncrypto';
 import {
+  checkValidKeyUse,
+} from './../errors';
+import {
+  HASH_ALG_DEFAULT,
+} from './../constants';
+import {
   arrayBufferToBase64,
   base64ToArrayBuffer,
-  checkValidKeyUse,
-  HASH_ALG_DEFAULT,
   publicExponent,
+} from './../utils';
+import {
   type ValueOf,
   type HashAlg,
-} from '@/index';
-import { KeyUse, RSA_EXCHANGE_ALG, RSA_WRITE_ALG, type RsaKeyLength } from '@/rsa';
+} from './../types';
+import { KeyUse, RSA_EXCHANGE_ALG, RSA_WRITE_ALG, type RsaKeyLength } from './types';
 
 export const makeKeypair = async (
   size: ValueOf<typeof RsaKeyLength>,

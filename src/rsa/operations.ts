@@ -3,15 +3,20 @@ import {
   normalizeBase64ToBuffer,
   arrayBufferToBase64,
   normalizeUnicodeToBuffer,
+} from './../utils';
+import {
   CHAR_SIZE_DEFAULT,
   SALT_LENGTH,
   HASH_ALG_DEFAULT,
+} from './../constants';
+import {
   type HashAlg,
   type CharSize,
   type Message,
   type ValueOf,
-} from '@/index';
-import { importPublicKey, KeyUse, RSA_EXCHANGE_ALG, RSA_WRITE_ALG } from '@/rsa';
+} from './../types';
+import { importPublicKey } from './keys';
+import { KeyUse, RSA_EXCHANGE_ALG, RSA_WRITE_ALG } from './types';
 
 export const sign = async (
   msg: Message,

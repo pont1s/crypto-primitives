@@ -1,4 +1,5 @@
 import { subtle } from 'uncrypto';
+import { type Message } from './../types';
 import {
   normalizeUtf16ToBuffer,
   normalizeBase64ToBuffer,
@@ -6,15 +7,18 @@ import {
   joinBuffers,
   arrayBufferToBase64,
   arrayBufferToString,
-  type Message,
-} from '@/index';
+} from './../utils';
+import {
+  CTR_LEN_DEFAULT,
+  SYMMETRIC_ALG_DEFAULT,
+} from './constants';
 import {
   importKey,
-  SYMMETRIC_ALG_DEFAULT,
-  CTR_LEN_DEFAULT,
+} from './keys';
+import {
   SymmetricAlg,
   type SymmetricAlgorithmsKeyOptions,
-} from '@/aes';
+} from './types';
 
 export const encryptBytes = async (
   msg: Message,

@@ -1,4 +1,4 @@
-import { ValueOf } from '@/index';
+import { ValueOf } from './../types';
 
 export const EccCurves = {
   P256: 'P-256',

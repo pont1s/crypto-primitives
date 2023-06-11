@@ -1,4 +1,4 @@
-import { EccCurves, SymmetricAlg, SymmetricAlgKeyLength } from '@/aes';
+import { EccCurves, SymmetricAlg, SymmetricAlgKeyLength } from './types';
 
 export const ECC_SHARED_ALG = 'ECDH';
 export const ECDH_CURVE_DEFAULT = EccCurves.P384;
