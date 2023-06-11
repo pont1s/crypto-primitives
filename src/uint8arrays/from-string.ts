@@ -1,20 +1,17 @@
-import { asUint8Array } from './as-uint8array';
-import bases, { type SupportedEncodings } from './utils';
+const universalAtob = (base64Encoded: string) => {
+  try {
+    return atob(base64Encoded);
+  } catch (err) {
+    return Buffer.from(base64Encoded, 'base64').toString();
+  }
+};
 
-export function fromString(string: string, encoding: SupportedEncodings = 'utf8'): Uint8Array {
-  const base = bases[encoding];
-
-  if (base == null) {
-    throw new Error(`Unsupported encoding "${encoding}"`);
+export function fromBase64ToBuffer(base64Encoded: string): Uint8Array {
+  const binaryString = universalAtob(base64Encoded);
+  const bytes = new Uint8Array(binaryString.length);
+  for (let i = 0; i < binaryString.length; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
   }
 
-  if ((encoding === 'utf8' || encoding === 'utf-8') && globalThis.Buffer != null && globalThis.Buffer.from != null) {
-    return asUint8Array(globalThis.Buffer.from(string, 'utf-8'));
-  }
-
-  // add multibase prefix
-  return base.decoder
-    .decode(`${base.prefix}${string}`); // eslint-disable-line @typescript-eslint/restrict-template-expressions
+  return bytes;
 }
-
-export type { SupportedEncodings };

@@ -1,6 +1,7 @@
+import { getRandomValues } from 'uncrypto';
 import {
-  toString,
-  fromString,
+  fromStringToBase64,
+  fromBase64ToBuffer,
 } from './uint8arrays';
 import {
   CharSize,
@@ -17,11 +18,11 @@ export const arrayBufferToString = (buffer: ArrayBuffer, charSize: ValueOf<typeo
 };
 
 export const arrayBufferToBase64 = (buffer: ArrayBuffer): string => {
-  return toString(new Uint8Array(buffer), 'base64pad');
+  return fromStringToBase64(new Uint8Array(buffer));
 };
 
 export const base64ToArrayBuffer = (str: string): ArrayBuffer => {
-  return fromString(str, 'base64pad').buffer;
+  return fromBase64ToBuffer(str).buffer;
 };
 
 export const stringToArrayBuffer = (str: string, charSize: ValueOf<typeof CharSize>): ArrayBuffer => {
@@ -42,7 +43,7 @@ export function randomBuffer(length: number, { max }: { max: number } = { max: 2
   const arr = new Uint8Array(length);
 
   if (max === 255) {
-    window.crypto.getRandomValues(arr);
+    getRandomValues(arr);
     return arr.buffer;
   }
 
@@ -52,7 +53,7 @@ export function randomBuffer(length: number, { max }: { max: number } = { max: 2
   const tmp = new Uint8Array(1);
 
   while (index < arr.length) {
-    window.crypto.getRandomValues(tmp);
+    getRandomValues(tmp);
     if (tmp[0] < divisibleMax) {
       arr[index] = tmp[0] % interval;
       index += 1;
