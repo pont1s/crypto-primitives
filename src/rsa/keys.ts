@@ -42,12 +42,12 @@ export const convertBinaryToPem = (binaryData: ArrayBuffer, label: string) => {
 };
 
 export const exportPublicKey = async (key: CryptoKey) => {
-  const keyPem = await window.crypto.subtle.exportKey('spki', key);
+  const keyPem = await subtle.exportKey('spki', key);
   return convertBinaryToPem(keyPem, 'PUBLIC KEY');
 };
 
 export const exportPrivateKey = async (key: CryptoKey) => {
-  const keyPem = await window.crypto.subtle.exportKey('pkcs8', key);
+  const keyPem = await subtle.exportKey('pkcs8', key);
   return convertBinaryToPem(keyPem, 'PRIVATE KEY');
 };
 
