@@ -1,4 +1,7 @@
-import { toString, fromString } from 'uint8arrays';
+import {
+  toString,
+  fromString,
+} from './uint8arrays';
 import {
   CharSize,
   type ValueOf,
