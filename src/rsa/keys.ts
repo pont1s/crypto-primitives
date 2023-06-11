@@ -9,6 +9,8 @@ import {
   arrayBufferToBase64,
   base64ToArrayBuffer,
   publicExponent,
+  stripPrivateKeyHeader,
+  stripPublicKeyHeader,
 } from './../utils';
 import {
   type ValueOf,
@@ -35,33 +37,6 @@ export const makeKeypair = async (
     true,
     uses,
   );
-};
-
-export const convertBinaryToPem = (binaryData: ArrayBuffer, label: string) => {
-  const base64Cert = arrayBufferToBase64(binaryData);
-  return `-----BEGIN ${label}-----\n${base64Cert}\n-----END ${label}-----`;
-};
-
-export const exportPublicKey = async (key: CryptoKey) => {
-  const keyPem = await subtle.exportKey('spki', key);
-  return convertBinaryToPem(keyPem, 'PUBLIC KEY');
-};
-
-export const exportPrivateKey = async (key: CryptoKey) => {
-  const keyPem = await subtle.exportKey('pkcs8', key);
-  return convertBinaryToPem(keyPem, 'PRIVATE KEY');
-};
-
-const stripPublicKeyHeader = (base64Key: string): string => {
-  return base64Key
-    .replace('-----BEGIN PUBLIC KEY-----\n', '')
-    .replace('\n-----END PUBLIC KEY-----', '');
-};
-
-const stripPrivateKeyHeader = (base64Key: string): string => {
-  return base64Key
-    .replace('-----BEGIN PRIVATE KEY-----\n', '')
-    .replace('\n-----END PRIVATE KEY-----', '');
 };
 
 export const importPublicKey = async (

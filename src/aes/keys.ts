@@ -1,6 +1,7 @@
 import { subtle } from 'uncrypto';
 import {
-  base64ToArrayBuffer,
+  base64ToArrayBuffer, stripPrivateKeyHeader,
+  stripPublicKeyHeader,
 } from './../utils';
 import {
   ECC_SHARED_ALG, ECDH_CURVE_DEFAULT,
@@ -46,8 +47,8 @@ export const getEncryptSymmetricKey = async (
 export const getDeriveKeyPair = async (curveName?: keyof typeof EccCurves): Promise<CryptoKeyPair> => {
   return subtle.generateKey(
     {
-      name: curveName ?? ECC_SHARED_ALG,
-      namedCurve: ECDH_CURVE_DEFAULT,
+      name: ECC_SHARED_ALG,
+      namedCurve: curveName ?? ECDH_CURVE_DEFAULT,
     },
     true,
     ['deriveKey'],
@@ -68,5 +69,39 @@ export async function importKey(
     },
     true,
     ['encrypt', 'decrypt'],
+  );
+}
+
+export async function importDerivePublicKey(
+  base64key: string,
+  curveName?: keyof typeof EccCurves,
+): Promise<CryptoKey> {
+  const buffer = base64ToArrayBuffer(stripPublicKeyHeader(base64key));
+  return subtle.importKey(
+    'spki',
+    buffer,
+    {
+      name: ECC_SHARED_ALG,
+      namedCurve: curveName ?? ECDH_CURVE_DEFAULT,
+    },
+    true,
+    [],
+  );
+}
+
+export async function importDerivePrivateKey(
+  base64key: string,
+  curveName?: keyof typeof EccCurves,
+): Promise<CryptoKey> {
+  const buffer = base64ToArrayBuffer(stripPrivateKeyHeader(base64key));
+  return subtle.importKey(
+    'pkcs8',
+    buffer,
+    {
+      name: ECC_SHARED_ALG,
+      namedCurve: curveName ?? ECDH_CURVE_DEFAULT,
+    },
+    true,
+    ['deriveKey'],
   );
 }

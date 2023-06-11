@@ -10,6 +10,18 @@ import {
 } from './types';
 import { InvalidMaxValue } from './errors';
 
+export const stripPublicKeyHeader = (base64Key: string): string => {
+  return base64Key
+    .replace('-----BEGIN PUBLIC KEY-----\n', '')
+    .replace('\n-----END PUBLIC KEY-----', '');
+};
+
+export const stripPrivateKeyHeader = (base64Key: string): string => {
+  return base64Key
+    .replace('-----BEGIN PRIVATE KEY-----\n', '')
+    .replace('\n-----END PRIVATE KEY-----', '');
+};
+
 export const arrayBufferToString = (buffer: ArrayBuffer, charSize: ValueOf<typeof CharSize>): string => {
   const arr = charSize === 8 ? new Uint8Array(buffer) : new Uint16Array(buffer);
   return Array.from(arr)
